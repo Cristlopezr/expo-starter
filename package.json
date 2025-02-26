@@ -1,19 +1,19 @@
 {
-    "name": "expo-nativewind",
+    "name": "expo-starter",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "dev": "tsx --watch src/index.ts",
         "build": "rimraf ./dist && tsc",
-        "start": "node dist/src/index.js",
+        "start": "node dist/index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "bin": "./dist/src/index.js",
+    "bin": "./dist/index.js",
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "type": "commonjs",
     "devDependencies": {
         "@types/node": "^22.13.5",
         "rimraf": "^6.0.1",
@@ -21,6 +21,7 @@
         "typescript": "^5.7.3"
     },
     "dependencies": {
+        "@inquirer/prompts": "^7.3.2",
         "chalk": "^5.4.1",
         "execa": "^9.5.2"
     }
