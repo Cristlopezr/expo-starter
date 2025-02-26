@@ -2,3 +2,7 @@ node_modules/
 dist/
 
 .env
+
+expo-env.d.ts
+
+nativewind-env.d.ts
