@@ -1,1 +1,1 @@
-# Expo CLI starter with nativewind dark and light theme
+# CLI to init expo with different templates
