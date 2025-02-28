@@ -48,8 +48,9 @@ export class FileSystemServiceImplementation implements FileSystemService {
             for (let i = 0; i < propertiesToEdit.length; i++) {
                 if (propertiesToEdit[i].includes('expo')) {
                     JSONFileToJSON.expo[propertiesToEdit[i].split('.')[1]] = projectName.toLowerCase().replace(/\s+/g, '-');
+                } else {
+                    JSONFileToJSON[propertiesToEdit[i]] = projectName.toLowerCase().replace(/\s+/g, '-');
                 }
-                JSONFileToJSON[propertiesToEdit[i]] = projectName.toLowerCase().replace(/\s+/g, '-');
             }
 
             await fs.writeFile(path.join(projectPath, fileNameWithExtention), JSON.stringify(JSONFileToJSON, null, 2));
