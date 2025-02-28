@@ -3,8 +3,4 @@ dist/
 
 .env
 
-expo-env.d.ts
-
-nativewind-env.d.ts
-
 index.old.ts

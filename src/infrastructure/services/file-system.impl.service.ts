@@ -40,20 +40,18 @@ export class FileSystemServiceImplementation implements FileSystemService {
         }
     }
 
-    //TODO:Edit this function
-    async editJSONFile(projectPath: string, fileNameWithExtention: string, projectName: string, propertiesToEdit: string[]): Promise<void> {
+    async editJSONFile(projectPath: string, fileNameWithExtention: string, projectName: string, keysToEdit: string[]): Promise<void> {
+        const filePath = path.join(projectPath, fileNameWithExtention);
+
         try {
-            const JSONFile = await fs.readFile(path.join(projectPath, fileNameWithExtention), 'utf-8');
+            const JSONFile = await fs.readFile(filePath, 'utf-8');
             const JSONFileToJSON = JSON.parse(JSONFile);
-            for (let i = 0; i < propertiesToEdit.length; i++) {
-                if (propertiesToEdit[i].includes('expo')) {
-                    JSONFileToJSON.expo[propertiesToEdit[i].split('.')[1]] = projectName.toLowerCase().replace(/\s+/g, '-');
-                } else {
-                    JSONFileToJSON[propertiesToEdit[i]] = projectName.toLowerCase().replace(/\s+/g, '-');
-                }
+
+            for (let i = 0; i < keysToEdit.length; i++) {
+                this.chaneObjectKeyValue(keysToEdit[i].split('.'), JSONFileToJSON, projectName);
             }
 
-            await fs.writeFile(path.join(projectPath, fileNameWithExtention), JSON.stringify(JSONFileToJSON, null, 2));
+            await fs.writeFile(filePath, JSON.stringify(JSONFileToJSON, null, 2));
         } catch (error) {
             throw new Error(`Error editing ${fileNameWithExtention}: ${error}.`);
         }
@@ -65,5 +63,21 @@ export class FileSystemServiceImplementation implements FileSystemService {
         } catch (error) {
             throw new Error(`Error creating ${fileName}: ${error}`);
         }
+    }
+
+    private chaneObjectKeyValue(keys: string[], obj: any, value: string) {
+        if (!obj || typeof obj !== 'object') throw new Error(`Invalid object: ${JSON.stringify(obj, null, 2)}`);
+
+        const key = keys[0];
+        if (keys.length === 1) {
+            obj[key] = value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+            return;
+        }
+
+        if (!(key in obj)) {
+            throw new Error(`Key '${key}' does not exist in ${JSON.stringify(obj)}`);
+        }
+
+        this.chaneObjectKeyValue(keys.slice(1), obj[key!], value);
     }
 }

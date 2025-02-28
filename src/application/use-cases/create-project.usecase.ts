@@ -24,13 +24,14 @@ export class CreateProjectUseCase {
                 projectPath,
                 'expo-env.d.ts',
                 `/// <reference types="expo/types" />
-            // NOTE: This file should not be edited and should be in your git ignore`
+
+// NOTE: This file should not be edited and should be in your git ignore`
             );
-            await this.fileSystemService.createTypeDeclarationFile(projectPath, 'nativewind-env.d.ts', `/// <reference types="nativewind/types" />`);
 
             ChalkLogger.info('Installing dependencies...');
             await this.commandExecutorService.runNpmInstall(projectPath);
             ChalkLogger.success(`Project ${projectName} created succesfully.`);
+            ChalkLogger.info(`Navigate to the ${projectName} directory and run \`npx expo start\` to get started.`);
         } catch (error) {
             ChalkLogger.error(error);
         }
