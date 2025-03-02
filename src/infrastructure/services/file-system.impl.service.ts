@@ -40,20 +40,20 @@ export class FileSystemServiceImplementation implements FileSystemService {
         }
     }
 
-    async editJSONFile(projectPath: string, fileNameWithExtention: string, projectName: string, keysToEdit: string[]): Promise<void> {
-        const filePath = path.join(projectPath, fileNameWithExtention);
+    async editJSONFile(projectPath: string, fileNameWithExtension: string, projectName: string, keysToEdit: string[]): Promise<void> {
+        const filePath = path.join(projectPath, fileNameWithExtension);
 
         try {
             const JSONFile = await fs.readFile(filePath, 'utf-8');
             const JSONFileToJSON = JSON.parse(JSONFile);
 
             for (let i = 0; i < keysToEdit.length; i++) {
-                this.chaneObjectKeyValue(keysToEdit[i].split('.'), JSONFileToJSON, projectName);
+                this.changeValueOfKey(keysToEdit[i].split('.'), JSONFileToJSON, projectName);
             }
 
             await fs.writeFile(filePath, JSON.stringify(JSONFileToJSON, null, 2));
         } catch (error) {
-            throw new Error(`Error editing ${fileNameWithExtention}: ${error}.`);
+            throw new Error(`Error editing ${fileNameWithExtension}: ${error}.`);
         }
     }
 
@@ -65,7 +65,7 @@ export class FileSystemServiceImplementation implements FileSystemService {
         }
     }
 
-    private chaneObjectKeyValue(keys: string[], obj: any, value: string) {
+    private changeValueOfKey(keys: string[], obj: any, value: string) {
         if (!obj || typeof obj !== 'object') throw new Error(`Invalid object: ${JSON.stringify(obj, null, 2)}`);
 
         const key = keys[0];
@@ -78,6 +78,6 @@ export class FileSystemServiceImplementation implements FileSystemService {
             throw new Error(`Key '${key}' does not exist in ${JSON.stringify(obj)}`);
         }
 
-        this.chaneObjectKeyValue(keys.slice(1), obj[key!], value);
+        this.changeValueOfKey(keys.slice(1), obj[key!], value);
     }
 }
