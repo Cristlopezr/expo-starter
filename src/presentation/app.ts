@@ -5,9 +5,14 @@ import { GatherProjectInfoUseCase } from '../application/use-cases/gather-projec
 export class App {
     private templateChoices: Choice[] = [
         {
-            name: 'nativewind',
+            name: 'Nativewind',
             value: 'nativewind',
-            description: 'Expo with nativewind configured with dark and light theme',
+            description: 'Expo project preconfigured with NativeWind and support for dark and light themes.',
+        },
+        {
+            name: 'React native paper',
+            value: 'native-paper',
+            description: 'Expo project preconfigured with React Native Paper and support for dark and light themes.',
         },
     ];
 
