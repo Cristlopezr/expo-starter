@@ -1,4 +1,5 @@
-import { Appearance, Pressable, Text, View } from 'react-native';
+import { Appearance, Text, View } from 'react-native';
+import Button from '../components/button';
 
 export default function Index() {
     const onChangeTheme = () => {
@@ -9,9 +10,9 @@ export default function Index() {
         <View className='h-full justify-center items-center'>
             <Text className='text-text'>Edit index.tsx</Text>
 
-            <Pressable onPress={onChangeTheme}>
-                <Text className='text-text'>Change Theme</Text>
-            </Pressable>
+            <Button onPress={onChangeTheme}>
+                <Text className='text-primary-foreground'>Change theme</Text>
+            </Button>
         </View>
     );
 }
