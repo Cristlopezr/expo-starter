@@ -1,10 +1,10 @@
 import path from 'path';
 import { FileSystemService } from '../../domain/services/file-system.service.js';
 import { CommandExecutorService } from '../../domain/services/command-executor.service.js';
-import { ChalkLogger } from '../../plugins/chalk-logger.plugin.js';
+import { LoggerService } from '../../domain/services/logger.service.js';
 
 export class CreateProjectUseCase {
-    constructor(private fileSystemService: FileSystemService, private commandExecutorService: CommandExecutorService) {}
+    constructor(private fileSystemService: FileSystemService, private commandExecutorService: CommandExecutorService, private logger: LoggerService) {}
 
     async execute(projectName: string, selectedTemplate: string) {
         try {
@@ -12,11 +12,11 @@ export class CreateProjectUseCase {
             const projectPath = path.join(process.cwd(), projectName);
             const assetsFolderPath = path.join(import.meta.dirname, '..', '..', '..', 'templates', '_shared');
 
-            ChalkLogger.info(`Creating project directory.`);
+            this.logger.info(`Creating project directory.`);
 
             await this.fileSystemService.createProjectDirectory(projectPath);
 
-            ChalkLogger.info(`Creating project ${projectName} from template ${selectedTemplate}.`);
+            this.logger.info(`Creating project ${projectName} from template ${selectedTemplate}.`);
             await this.fileSystemService.copyAssetsFolder(assetsFolderPath, projectPath);
             await this.fileSystemService.replicateTemplate(templatePath, projectPath);
             await this.fileSystemService.editJSONFile(projectPath, 'package.json', projectName, ['name']);
@@ -29,12 +29,27 @@ export class CreateProjectUseCase {
 // NOTE: This file should not be edited and should be in your git ignore`
             );
 
-            ChalkLogger.info('Installing dependencies...');
-            await this.commandExecutorService.runNpmInstall(projectPath);
-            ChalkLogger.success(`Project ${projectName} created succesfully.`);
-            ChalkLogger.info(`Navigate to the ${projectName} directory and run \`npx expo start\` to get started.`);
+            await this.installDependencies(projectPath);
+            this.logger.success(`Project ${projectName} created succesfully.`);
+            this.logger.info(`Navigate to the ${projectName} directory and run \`npx expo start\` to get started.`);
         } catch (error) {
-            ChalkLogger.error(error);
+            this.logger.error(`Failed to create the project: ${error}`);
+            process.exit(1);
+        }
+    }
+
+    private async installDependencies(projectPath: string) {
+        try {
+            this.logger.info('Installing dependencies...');
+            await this.commandExecutorService.runNpmInstall(projectPath);
+        } catch (error: any) {
+            if (error.isGracefullyCanceled) {
+                this.logger.info('\nnpm install process was cancelled by user.');
+                process.exit(0);
+            } else {
+                this.logger.error(`Error in CommandExecutorService: ${error}`);
+                process.exit(1);
+            }
         }
     }
 }

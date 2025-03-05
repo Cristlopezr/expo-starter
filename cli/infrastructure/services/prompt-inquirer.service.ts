@@ -3,16 +3,24 @@ import { Choice, Options, PromptService } from '../../domain/services/prompt.ser
 
 export class PromptServiceImplementation implements PromptService {
     async askProjectName(message: string, options: Options) {
-        const { required } = options;
-        return await input({
-            message,
-            required,
-        });
+        try {
+            const { required } = options;
+            return await input({
+                message,
+                required,
+            });
+        } catch (error) {
+            throw error;
+        }
     }
     async selectTemplate(message: string, choices: Choice[]) {
-        return await select({
-            message,
-            choices,
-        });
+        try {
+            return await select({
+                message,
+                choices,
+            });
+        } catch (error) {
+            throw error;
+        }
     }
 }
