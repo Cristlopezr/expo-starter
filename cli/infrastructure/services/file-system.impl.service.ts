@@ -40,6 +40,10 @@ export class FileSystemServiceImplementation implements FileSystemService {
         }
     }
 
+    async copyAssetsFolder(folderPath: string, projectPath: string): Promise<void> {
+        await this.replicateTemplate(folderPath, projectPath);
+    }
+
     async editJSONFile(projectPath: string, fileNameWithExtension: string, projectName: string, keysToEdit: string[]): Promise<void> {
         const filePath = path.join(projectPath, fileNameWithExtension);
 

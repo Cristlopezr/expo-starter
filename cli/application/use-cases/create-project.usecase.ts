@@ -10,13 +10,14 @@ export class CreateProjectUseCase {
         try {
             const templatePath = path.join(import.meta.dirname, '..', '..', '..', 'templates', selectedTemplate);
             const projectPath = path.join(process.cwd(), projectName);
+            const assetsFolderPath = path.join(import.meta.dirname, '..', '..', '..', 'templates', '_shared');
 
             ChalkLogger.info(`Creating project directory.`);
 
             await this.fileSystemService.createProjectDirectory(projectPath);
 
             ChalkLogger.info(`Creating project ${projectName} from template ${selectedTemplate}.`);
-
+            await this.fileSystemService.copyAssetsFolder(assetsFolderPath, projectPath);
             await this.fileSystemService.replicateTemplate(templatePath, projectPath);
             await this.fileSystemService.editJSONFile(projectPath, 'package.json', projectName, ['name']);
             await this.fileSystemService.editJSONFile(projectPath, 'app.json', projectName, ['expo.name', 'expo.slug']);
