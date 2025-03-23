@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "nativewind-project",
-    "slug": "nativewind-project",
+    "name": "nativewind",
+    "slug": "nativewind",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

@@ -25,9 +25,15 @@ module.exports = {
                     DEFAULT: 'rgb(var(--success))',
                     foreground: 'rgb(var(--success-foreground))',
                 },
-                background: 'rgb(var(--background))',
+                background: {
+                    DEFAULT: 'rgb(var(--background))',
+                    foreground: 'rgb(var(--background-foreground))',
+                },
+                card: {
+                    DEFAULT: 'rgb(var(--card))',
+                    foreground: 'rgb(var(--card-foreground))',
+                },
                 border: 'rgb(var(--border))',
-                card: 'rgb(var(--card))',
                 notification: 'rgb(var(--notification))',
                 text: 'rgb(var(--text))',
             },
