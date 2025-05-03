@@ -1,6 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { CustomTheme } from '../interfaces/theme';
+import { getHeaderTitle, Header } from '@react-navigation/elements';
 
 export const StackNavigator = () => {
     const { colors } = useTheme() as CustomTheme;
@@ -8,7 +9,7 @@ export const StackNavigator = () => {
     return (
         <Stack
             screenOptions={{
-                statusBarBackgroundColor: colors.background,
+                header: ({ options, route }) => <Header {...options} title={getHeaderTitle(options, route.name)} />,
                 headerStyle: {
                     backgroundColor: colors.background,
                 },
@@ -17,7 +18,7 @@ export const StackNavigator = () => {
                 },
             }}
         >
-            <Stack.Screen name='index' />
+            <Stack.Screen name="index" />
         </Stack>
     );
 };

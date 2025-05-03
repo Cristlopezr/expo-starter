@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "native-paper",
-    "slug": "native-paper",
+    "name": "native-app",
+    "slug": "native-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
